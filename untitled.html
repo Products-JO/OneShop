@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Shop - الأردن</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            direction: rtl;
+        }
+        .header {
+            background-color: orange;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            animation: pulse 1.5s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        a {
+            text-decoration: none;
+        }
+        .header img {
+            height: 40px;
+            width: auto;
+        }
+        .container {
+            padding: 20px;
+        }
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 650px;
+            margin: auto;
+            margin-top: 20px;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 33%;
+        }
+        .images img {
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid black;
+            transition: transform 0.3s ease-in-out;
+        }
+        .images img:hover {
+            transform: scale(1.1);
+        }
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: white;
+            padding: 20px;
+            background-color: orange;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        .price .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 18px;
+        }
+        .call-button, .whatsapp-button {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .call-button {
+            background-color: red;
+        }
+        .call-button:hover {
+            background-color: darkred;
+        }
+        .whatsapp-button {
+            background-color: green;
+        }
+        .whatsapp-button:hover {
+            background-color: darkgreen;
+        }
+        .delivery-info {
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal img:hover {
+            transform: scale(1.1);
+        }
+        .modal .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://www.facebook.com/share/1DebsKv1jf/?mibextid=wwXIfr" target="_blank">
+        <div class="header">
+            <img src="https://i.postimg.cc/W1YLH3fR/IMG-1926.jpg" alt="Logo"> 
+            <span>One Shop - الأردن</span> 
+        </div>
+    </a>
+
+    <div class="container">
+        <div class="product-title">بكرة ستانلس ستيل عالية الجودة ✅</div>
+        <div class="images">
+            <div class="image-container">
+                <img src="https://i.postimg.cc/k4YNPNCF/IMG-1847.jpg" alt="منتج 1" onclick="openModal(this)">
+            </div>
+            <div class="image-container">
+                <img src="https://i.postimg.cc/qqtsJtMf/IMG-1848.jpg" alt="منتج 2" onclick="openModal(this)">
+            </div>
+            <div class="image-container">
+                <img src="https://i.postimg.cc/nzhKWRyh/IMG-1849.jpg" alt="منتج 3" onclick="openModal(this)">
+            </div>
+        </div>
+        <div class="price">
+            <span class="old-price">السعر قبل الخصم: 80 دينار</span> -
+            <span class="current-price">السعر الحالي: 50 دينار</span>
+        </div>
+        <div class="delivery-info">(تتوفر خدمة التوصيل لجميع محافظات المملكة)</div>
+        <a href="tel:+962797610007" class="call-button">للإتصال والاستفسار</a>
+        <a href="https://wa.me/962797610007" class="whatsapp-button">تواصل عبر واتساب</a>
+    </div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img id="modalImage">
+    </div>
+
+    <script>
+        function openModal(img) {
+            document.getElementById("imageModal").classList.add("show");
+            document.getElementById("modalImage").src = img.src;
+        }
+        
+        function closeModal() {
+            document.getElementById("imageModal").classList.remove("show");
+        }
+    </script>
+</body>
+</html>
