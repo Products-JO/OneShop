@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عربة تخزين بربيش</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .images {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .images img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        h3 {
+            color: red;
+            font-weight: bold;
+        }
+        p {
+            font-size: 18px;
+            color: #666;
+        }
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #d9534f;
+        }
+        .call-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 15px 30px;
+            font-size: 22px;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .call-button:hover {
+            background-color: #218838;
+        }
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 style="color: red;">عربة تخزين البربيش</h3>
+        <div class="images">
+      
+      
+      
+            <img src="https://i.postimg.cc/PJQ8qPZb/IMG-20250119-WA0020.jpg" alt="عربة تخزين بربيش - صورة 2" onclick="openLightbox(this.src)">
+        </div>
+        <p>عجال رابر لا تحتاج للنفخ</p>
+        <p>هيكل معدني قوي ومتين</p>
+        <p>ربطة بربيش 25م إضافي</p>
+        <p class="price">السعر 140 دينار</p>
+        <a href="tel:+962797610007" class="call-button">اتصل بي</a>
+    </div><!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="صورة مكبرة">
+</div>
+
+<script>
+    function openLightbox(src) {
+        document.getElementById("lightbox-img").src = src;
+        document.getElementById("lightbox").style.display = "flex";
+    }
+    function closeLightbox() {
+        document.getElementById("lightbox").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
