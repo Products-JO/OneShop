@@ -1,198 +1,266 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One Shop - الأردن</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            direction: rtl;
-        }
-        .header {
-            background-color: orange;
-            color: white;
-            padding: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-        a {
-            text-decoration: none;
-        }
-        .header img {
-            height: 40px;
-            width: auto;
-        }
-        .container {
-            padding: 20px;
-        }
-        .images {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            max-width: 650px;
-            margin: auto;
-            margin-top: 20px;
-        }
-        .image-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 33%;
-        }
-        .images img {
-            width: 100%;
-            height: 320px;
-            border-radius: 10px;
-            object-fit: contain;
-            cursor: pointer;
-            border: 3px solid black;
-            transition: transform 0.3s ease;
-            background-color: #fff;
-        }
-        .images img:hover {
-            transform: scale(1.05);
-        }
-        .zoom-text {
-            font-size: 12px;
-            color: gray;
-            margin-top: 5px;
-        }
-        .price {
-            font-size: 22px;
-            font-weight: bold;
-            margin: 10px 0;
-            color: #333;
-            padding: 20px;
-            background-color: orange;
-            color: white;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
-            text-align: center;
-            position: relative;
-        }
-        .price .arrow-left,
-        .price .arrow-right {
-            display: none;
-        }
-        .old-price {
-            display: none;
-        }
-        .current-price {
-            color: #fff;
-            font-size: 24px;
-        }
-        .call-button {
-            display: inline-block;
-            padding: 12px 30px;
-            font-size: 18px;
-            color: white;
-            background-color: red;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-top: 20px;
-        }
-        .call-button:hover {
-            background-color: darkred;
-        }
-        .delivery-info {
-            font-size: 16px;
-            color: #333;
-            margin-top: 10px;
-            font-style: italic;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal img {
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 5px;
-        }
-        .modal .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>فاتورة مبيعات</title>
+  <style>
+    body {
+      font-family: Arial;
+      direction: rtl;
+      background: #f4f4f4;
+      padding: 10px;
+      margin: 0;
+    }
+    #invoiceContent {
+      background: white;
+      max-width: 800px;
+      margin: auto;
+      padding: 15px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h2[contenteditable] {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+      border: 1px dashed transparent;
+      padding: 5px;
+    }
+    h2[contenteditable]:hover {
+      border-color: #ccc;
+    }
+    .info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .field {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-weight: bold;
+      font-size: 13px;
+    }
+    input, textarea {
+      padding: 6px;
+      font-size: 13px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: right;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th:nth-child(2), td:nth-child(2) {
+      width: 40%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 3px 2px;
+      font-size: 12px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 1.1;
+      height: 32px;
+    }
+    textarea {
+      border: none;
+      resize: none;
+      font-size: 12px;
+      overflow: hidden;
+      text-align: right;
+      height: 28px;
+      padding: 2px;
+    }
+    input[type="number"] {
+      font-size: 12px;
+      padding: 3px;
+      text-align: center;
+    }
+    .buttons {
+      text-align: center;
+      margin-top: 15px;
+    }
+    button {
+      padding: 8px 15px;
+      margin: 5px;
+      font-size: 14px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .discounts {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .discount-label {
+      font-size: 14px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 10px;
+    }
+    .total-footer {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 14px;
+    }
+    #finalTotal {
+      font-weight: bold;
+      color: green;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      h2[contenteditable] {
+        border: none !important;
+      }
+      #discountAmount, #discountPercent {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <a href="https://www.facebook.com/share/1DebsKv1jf/?mibextid=wwXIfr" target="_blank">
-        <div class="header">
-            <img src="https://i.postimg.cc/W1YLH3fR/IMG-1926.jpg" alt="Logo"> 
-            <span>One Shop - الأردن</span> 
-        </div>
-    </a>
-
-    <div class="container">
-
-        <div class="images">
-            <div class="image-container">
-                <img src="https://i.postimg.cc/ydtc5BHW/893e6c21-4f91-4506-a9e7-8a0542363dcd-1000x1000-h1-XCe-Gj-PE4t-D9-PC98gbf8i-B2g-XRQe-VSOp-Ock-Ied-X.png" alt="منتج 1" onclick="openModal(this)">
-                <span class="zoom-text">اضغط لتكبير الصورة</span>
-            </div>
-            <div class="image-container">
-                <img src="https://i.postimg.cc/4dmpByjr/51q-Nvz5-HGCL.jpg" alt="منتج 2" onclick="openModal(this)">
-                <span class="zoom-text">اضغط لتكبير الصورة</span>
-            </div>
-            <div class="image-container">
-                <img src="https://i.postimg.cc/hGC9LTZL/s-l1200.jpg" alt="منتج 3" onclick="openModal(this)">
-                <span class="zoom-text">اضغط لتكبير الصورة</span>
-            </div>
-        </div>
-
-        <div class="price">
-            <span class="current-price">١٣ دينار شامل التوصيل فقط</span>
-        </div>
-
-        <div class="delivery-info">(تتوفر خدمة التوصيل لجميع محافظات المملكة)</div>
-
-        <a href="tel:+962797610007" class="call-button">للإتصال والاستفسار</a>
-
+<div id="invoiceContent">
+  <h2 contenteditable="true">فاتورة مبيعات</h2>
+  <div class="info">
+    <div class="field">
+      <label>اسم العميل:</label>
+      <input type="text" placeholder="اسم العميل"/>
     </div>
-
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close">&times;</span>
-        <img id="modalImage">
+    <div class="field">
+      <label>رقم الفاتورة:</label>
+      <input type="text" placeholder="001/2025"/>
     </div>
+    <div class="field">
+      <label>تاريخ الفاتورة:</label>
+      <input type="text" id="invoiceDate" readonly/>
+    </div>
+  </div>
 
-    <script>
-        function openModal(img) {
-            document.getElementById("imageModal").style.display = "flex";
-            document.getElementById("modalImage").src = img.src;
-        }
-        
-        function closeModal() {
-            document.getElementById("imageModal").style.display = "none";
-        }
-    </script>
+  <table>
+    <thead>
+      <tr>
+        <th>رقم</th>
+        <th>البيان</th>
+        <th>الكمية</th>
+        <th>السعر</th>
+        <th>الإجمالي</th>
+        <th class="no-print">❌</th>
+      </tr>
+    </thead>
+    <tbody id="invoiceBody">
+      <tr>
+        <td>1</td>
+        <td><textarea></textarea></td>
+        <td><input type="number" value="1" min="1" onchange="updateTotal(this)"/></td>
+        <td><input type="number" value="0" min="0" onchange="updateTotal(this)"/></td>
+        <td class="total">0.00</td>
+        <td class="no-print"><button onclick="deleteRow(this)">❌</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="discounts">
+    <input type="number" id="discountAmount" placeholder="خصم مبلغ (دينار)" style="width:160px;" oninput="updateGrandTotal()"/>
+    <input type="number" id="discountPercent" placeholder="خصم (%)" style="width:160px;" oninput="updateGrandTotal()"/>
+  </div>
+
+  <div id="discountText" class="discount-label" style="display: none;"></div>
+
+  <div class="total-footer">
+    المجموع الكلي: <span id="grandTotal">0.00</span> د.أ<br>
+    الإجمالي بعد الخصم: <span id="finalTotal">0.00</span> د.أ
+  </div>
+
+  <div class="notes">
+    <label>ملاحظات:</label>
+    <textarea placeholder="ملاحظات..." rows="2"></textarea>
+  </div>
+</div>
+
+<div class="buttons no-print">
+  <button onclick="addRow()">إضافة بند</button>
+  <button onclick="window.print()">طباعة</button>
+</div>
+
+<script>
+  let counter = 2;
+
+  function addRow(){
+    const table = document.getElementById("invoiceBody");
+    const row = table.insertRow();
+    row.innerHTML = `
+      <td>${counter++}</td>
+      <td><textarea></textarea></td>
+      <td><input type="number" value="1" min="1" onchange="updateTotal(this)"/></td>
+      <td><input type="number" value="0" min="0" onchange="updateTotal(this)"/></td>
+      <td class="total">0.00</td>
+      <td class="no-print"><button onclick="deleteRow(this)">❌</button></td>`;
+  }
+
+  function updateTotal(input){
+    const row = input.closest("tr");
+    const qty = parseFloat(row.cells[2].querySelector("input").value) || 0;
+    const price = parseFloat(row.cells[3].querySelector("input").value) || 0;
+    row.cells[4].textContent = (qty * price).toFixed(2);
+    updateGrandTotal();
+  }
+
+  function updateGrandTotal(){
+    let total = 0;
+    document.querySelectorAll(".total").forEach(c => total += parseFloat(c.textContent) || 0);
+    document.getElementById("grandTotal").textContent = total.toFixed(2);
+
+    const amount = parseFloat(document.getElementById("discountAmount").value) || 0;
+    const percent = parseFloat(document.getElementById("discountPercent").value) || 0;
+    const discountText = document.getElementById("discountText");
+
+    let final = total;
+    let discountLabel = "";
+
+    if (amount > 0) {
+      final -= amount;
+      discountLabel = `قيمة الخصم: ${amount.toFixed(2)} د.أ`;
+    } else if (percent > 0) {
+      const disc = (total * percent / 100);
+      final -= disc;
+      discountLabel = `قيمة الخصم: ${percent}%`;
+    }
+
+    if (discountLabel) {
+      discountText.style.display = "block";
+      discountText.textContent = discountLabel;
+    } else {
+      discountText.style.display = "none";
+    }
+
+    final = final < 0 ? 0 : final;
+    document.getElementById("finalTotal").textContent = final.toFixed(2);
+  }
+
+  function deleteRow(button){
+    button.closest("tr").remove();
+    updateGrandTotal();
+  }
+
+  window.onload = () => {
+    document.getElementById("invoiceDate").value = new Date().toLocaleDateString('ar-EG');
+    updateGrandTotal();
+  };
+</script>
 
 </body>
 </html>
