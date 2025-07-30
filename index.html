@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فاتورة مبيعات مع دفعات وقيمة خصم فقط</title>
+  <title>فاتورة مبيعات</title>
   <style>
     body {
       font-family: Arial;
@@ -74,16 +74,17 @@
     }
     #finalTotal { color: green; font-weight: bold; }
     #discountDisplay {
-      margin-bottom: 6px;
+      margin: 8px 0;
       font-weight: bold;
       color: #c00;
-      text-align: right;
     }
-    /* Hide delete buttons when printing */
     @media print {
-      button, .buttons { display: none !important; }
-      textarea, input { border: none; }
-      #paymentsSection { display: none !important; }
+      #discountInputRow, #paymentsSection, .buttons {
+        display: none !important;
+      }
+      textarea, input {
+        border: none;
+      }
     }
     #paymentsList {
       margin-top: 6px;
@@ -137,15 +138,14 @@
   </div>
 
   <div class="total-footer">
-    <div style="margin-bottom: 6px;">
-      <label style="font-weight:bold; margin-left:8px;">قيمة الخصم:</label>
-      <input type="number" id="discountValue" min="0" step="0.01" value="0" oninput="updateGrandTotal()" placeholder="أدخل قيمة الخصم" style="width:150px; text-align:right;">
+    <div id="discountInputRow">
+      <label>قيمة الخصم:</label>
+      <input type="number" id="discountValue" min="0" step="0.01" value="0" oninput="updateGrandTotal()" style="width:150px;">
     </div>
 
-    <!-- قسم الدفعات المتعددة -->
-    <div id="paymentsSection" style="margin-bottom: 10px; text-align: right;">
-      <label style="font-weight:bold;">الدفعات:</label>
-      <input type="number" id="newPayment" min="0" step="0.01" placeholder="أدخل مبلغ دفعة" style="width:150px; text-align:right;">
+    <div id="paymentsSection">
+      <label>الدفعات:</label>
+      <input type="number" id="newPayment" min="0" step="0.01" placeholder="أدخل مبلغ دفعة" style="width:150px;">
       <button onclick="addPayment()">➕ إضافة دفعة</button>
       <div id="paymentsList"></div>
     </div>
@@ -153,12 +153,12 @@
     <div id="discountDisplay"></div>
     <div>المجموع الكلي: <span id="grandTotal">0.00</span> د.أ</div>
     <div>المجموع بعد الخصم: <span id="totalAfterDiscount">0.00</span> د.أ</div>
-    <div id="finalTotal" style="margin-top:8px;">المبلغ النهائي بعد الدفعات: 0.00 د.أ</div>
+    <div id="finalTotal">المبلغ النهائي بعد الدفعات: 0.00 د.أ</div>
   </div>
 </div>
 
 <script>
-let payments = []; // مصفوفة تخزن الدفعات
+let payments = [];
 
 function addRow(data = {}) {
   const table = document.getElementById("invoiceBody");
@@ -195,19 +195,14 @@ function updateGrandTotal() {
   document.getElementById("grandTotal").textContent = total.toFixed(2);
 
   const discountValue = parseFloat(document.getElementById("discountValue").value) || 0;
-  let discountAmount = discountValue;
-  if(discountAmount > total) discountAmount = total;
+  const discount = discountValue > total ? total : discountValue;
 
-  if (discountAmount > 0) {
-    document.getElementById("discountDisplay").textContent = `قيمة الخصم: ${discountAmount.toFixed(2)} د.أ`;
-  } else {
-    document.getElementById("discountDisplay").textContent = '';
-  }
+  document.getElementById("discountDisplay").textContent =
+    discount > 0 ? `قيمة الخصم: ${discount.toFixed(2)} د.أ` : '';
 
-  const totalAfterDiscount = total - discountAmount;
+  const totalAfterDiscount = total - discount;
   document.getElementById("totalAfterDiscount").textContent = totalAfterDiscount.toFixed(2);
 
-  // حساب مجموع الدفعات
   const totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
   let finalAmount = totalAfterDiscount - totalPayments;
   if (finalAmount < 0) finalAmount = 0;
@@ -217,25 +212,20 @@ function updateGrandTotal() {
   renderPaymentsList();
 }
 
-// إضافة دفعة جديدة
 function addPayment() {
   const input = document.getElementById("newPayment");
   const val = parseFloat(input.value);
-  if (isNaN(val) || val <= 0) {
-    alert("أدخل مبلغ دفعة صحيح أكبر من صفر");
-    return;
-  }
+  if (isNaN(val) || val <= 0) return alert("أدخل مبلغ دفعة صحيح");
   payments.push({ id: Date.now(), amount: val });
   input.value = "";
   updateGrandTotal();
 }
 
-// عرض قائمة الدفعات مع زر حذف لكل دفعة
 function renderPaymentsList() {
   const container = document.getElementById("paymentsList");
   container.innerHTML = "";
   if (payments.length === 0) {
-    container.textContent = "لا توجد دفعات حتى الآن";
+    container.textContent = "لا توجد دفعات بعد";
     return;
   }
   payments.forEach(payment => {
@@ -259,7 +249,7 @@ function saveInvoice() {
     client: document.getElementById("clientName").value,
     date: document.getElementById("invoiceDate").value,
     discountValue: parseFloat(document.getElementById("discountValue").value) || 0,
-    payments: payments,
+    payments,
     items: []
   };
   document.querySelectorAll("#invoiceBody tr").forEach(row => {
@@ -282,7 +272,6 @@ function loadInvoice() {
   const invoice = JSON.parse(data);
   document.getElementById("clientName").value = invoice.client;
   document.getElementById("invoiceDate").value = invoice.date;
-
   document.getElementById("discountValue").value = invoice.discountValue || 0;
 
   payments = invoice.payments || [];
