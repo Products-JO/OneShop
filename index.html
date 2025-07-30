@@ -73,6 +73,12 @@
       text-align: right;
     }
     #finalTotal { color: green; font-weight: bold; }
+    #discountDisplay {
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #c00;
+      text-align: right;
+    }
     /* Hide delete buttons when printing */
     @media print {
       button, .buttons { display: none !important; }
@@ -118,7 +124,7 @@
 
   <table>
     <thead>
-      <tr><th>رقم</th><th>البيان</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th><th>❌</th></tr>
+      <tr><th>رقم</th><th>البيان</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
     </thead>
     <tbody id="invoiceBody"></tbody>
   </table>
@@ -144,7 +150,7 @@
       <div id="paymentsList"></div>
     </div>
 
-    <div id="discountDisplay" style="margin-bottom: 6px; font-weight:bold; color:#c00;"></div>
+    <div id="discountDisplay"></div>
     <div>المجموع الكلي: <span id="grandTotal">0.00</span> د.أ</div>
     <div>المجموع بعد الخصم: <span id="totalAfterDiscount">0.00</span> د.أ</div>
     <div id="finalTotal" style="margin-top:8px;">المبلغ النهائي بعد الدفعات: 0.00 د.أ</div>
@@ -163,7 +169,6 @@ function addRow(data = {}) {
     <td><input type="number" min="0" value="${data.qty || ''}" oninput="updateTotal(this)"></td>
     <td><input type="number" min="0" value="${data.price || ''}" oninput="updateTotal(this)"></td>
     <td class="total">0.00</td>
-    <td><button onclick="deleteRow(this)">❌</button></td>
   `;
   reNumberRows();
   updateTotal(row.cells[2].querySelector("input"));
@@ -171,12 +176,6 @@ function addRow(data = {}) {
 
 function reNumberRows() {
   document.querySelectorAll("#invoiceBody tr").forEach((row, i) => row.cells[0].textContent = i + 1);
-}
-
-function deleteRow(btn) {
-  btn.closest("tr").remove();
-  reNumberRows();
-  updateGrandTotal();
 }
 
 function updateTotal(input) {
